@@ -1,6 +1,7 @@
 name: 'BukkitSnake'
-main: com.bringholm.bukkitsnake.Main
+main: com.bringholm.bukkitsnake.BukkitSnake
 version: '1.0'
+softdepend: [ProtocolLib]
 author: 'AlvinB'
 commands:
   snake:

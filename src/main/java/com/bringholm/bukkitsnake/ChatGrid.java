@@ -34,16 +34,14 @@ public class ChatGrid {
     }
 
     public String[] getGrid() {
-        generateGrid();
+        this.generateGrid();
         return grid;
     }
 
     public void draw(Point p, ChatColor colour) {
         Validate.notNull(p, "Point cannot be null!");
         Validate.notNull(colour, "Colour cannot be null!");
-        if (p.getX() > size || p.getY() > size || p.getX() < 0 || p.getY() < 0) {
-            throw new IllegalArgumentException("Point specified is out of bounds!");
-        }
+        Validate.isTrue(!(p.getX() > size || p.getY() > size || p.getX() < 0 || p.getY() < 0), "Point specified is out of bounds!");
         colours.put(p, colour);
     }
 
