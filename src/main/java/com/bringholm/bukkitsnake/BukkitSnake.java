@@ -16,13 +16,14 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class BukkitSnake extends JavaPlugin {
+    
     private static BukkitSnake main;
     private static SnakeManager snakeManager;
 
-        public BukkitSnake() {
-            main = this;
-            snakeManager = new SnakeManager(this, PacketType.Play.Server.CHAT);
-        }
+    public BukkitSnake() {
+        main = this;
+        snakeManager = new SnakeManager(this, PacketType.Play.Server.CHAT);
+    }
 
     public static BukkitSnake getInstance() {
         return main;
@@ -36,6 +37,12 @@ public class BukkitSnake extends JavaPlugin {
             ProtocolLibrary.getProtocolManager().addPacketListener(snakeManager);
         }
         this.getCommand("snake").setExecutor(snakeManager);
+    }
+
+    @Override
+    public void onDisable(){
+        main = null;
+        snakeManager = null;
     }
 
     public static SnakeManager getSnakeManager() {
