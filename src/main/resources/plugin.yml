@@ -5,5 +5,18 @@ softdepend: [ProtocolLib]
 author: 'AlvinB'
 commands:
   snake:
-    description: Activates the snake chat game.
-    usage: /snake
+    description:  |
+      /snake start - Starts the snake game.
+      /snake stop - stops the snake game.
+    usage: /snake <start|stop>
+    permission: snake.play
+    permission-message: §cYou don't have permission to do this!
+permissions:
+  snake.*:
+    description: Gives you access to all permissions of this plugin.
+    children:
+      snake.admin: true
+      snake.play: true
+  snake.admin:
+    default: op
+    description: Allows you to enable and disable reflection.

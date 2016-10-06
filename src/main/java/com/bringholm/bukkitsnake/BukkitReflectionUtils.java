@@ -2,10 +2,7 @@ package com.bringholm.bukkitsnake;
 
 import org.bukkit.Bukkit;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 
 public class BukkitReflectionUtils {
     public static Class<?> getNMSClass(String clazz) {
@@ -116,6 +113,18 @@ public class BukkitReflectionUtils {
     public static Object getAndInvokeDeclaredCBConstructor(String className, Object parameters) {
         Class<?> clazz = getCBClass(className);
         return invokeDeclaredConstructor(clazz, parameters);
+    }
+
+    public static void modifyFinalField(Field field, Object target, Object newValue) {
+        try {
+            field.setAccessible(true);
+            Field modifierField = Field.class.getField("modifiers");
+            modifierField.setAccessible(true);
+            modifierField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            field.set(target, newValue);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     private static Class<?> getClass(String clazz) {

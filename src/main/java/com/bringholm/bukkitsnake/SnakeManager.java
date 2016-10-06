@@ -4,6 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import net.minecraft.server.v1_10_R1.Packet;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -88,6 +89,43 @@ public class SnakeManager extends PacketAdapter implements CommandExecutor {
                 } else {
                     sender.sendMessage(ChatColor.RED + "Only players can do this!");
                 }
+                break;
+            case "toggle":
+                if (sender.hasPermission("snake.admin")) {
+                    if (args.length == 2 && args[1].equals("reflection")) {
+                        Snake.isReflectionEnabled = !Snake.isReflectionEnabled;
+                        if (Snake.isReflectionEnabled) {
+                            sender.sendMessage(ChatColor.GOLD + "Enabled Reflection!");
+                        } else {
+                            sender.sendMessage(ChatColor.GOLD + "Disabled Reflection!");
+                        }
+                        BukkitSnake.getInstance().saveDefaultConfig();
+                        BukkitSnake.getInstance().getConfig().set("reflection-enabled", Snake.isReflectionEnabled);
+                        BukkitSnake.getInstance().saveConfig();
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "Incorrect arguments!");
+                    }
+                } else {
+                    sender.sendMessage(ChatColor.RED + "You don't have permission to do this!");
+                }
+                break;
+            case "help":
+                int i = -1;
+                if (args.length == 2) {
+                    try {
+                        i = Integer.parseInt(args[1]);
+                    } catch (NumberFormatException ignored) {
+
+                    }
+                }
+                if (i == -1) {
+                    Bukkit.getServer().dispatchCommand(sender, "help bukkitsnake");
+                } else {
+                    Bukkit.getServer().dispatchCommand(sender, "help bukkitsnake " + i);
+                }
+                break;
+            default:
+                sender.sendMessage(ChatColor.RED + "Incorrect arguments!");
                 break;
         }
         return true;

@@ -15,7 +15,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Snake extends BukkitRunnable {
-    public static boolean isReflectionEnabled = true;
+    public static boolean isReflectionEnabled = BukkitSnake.getInstance().getConfig().getBoolean("reflection-enabled");
 
     private char[] chars = new char[] {'︿', '﹀', '<', '>', '〈', '〉'};
     private Player player;
@@ -64,7 +64,7 @@ public class Snake extends BukkitRunnable {
                 cherry = new Point(random.nextInt(19), random.nextInt(19));
             }
             if (snakeParts.contains(headPos) || headPos.x > 19 || headPos.x < 0 || headPos.y > 19 || headPos.y < 0) {
-                this.cancel();
+                BukkitSnake.getSnakeManager().removeSnakeGame(this.player);
                 return;
             }
             this.render();
@@ -78,20 +78,14 @@ public class Snake extends BukkitRunnable {
     }
 
     public enum Direction {
-        UP(0),
-        DOWN(1),
-        LEFT(2),
-        RIGHT(3);
-
-        private int id;
-
-        Direction(int id) {
-            this.id = id;
-        }
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT;
 
         public Direction opposite() {
             Direction direction = null;
-            switch (id) {
+            switch (this.ordinal()) {
                 case 0:
                     direction = DOWN;
                     break;
